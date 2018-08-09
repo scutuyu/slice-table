@@ -8,6 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -15,10 +16,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -37,9 +35,31 @@ import static org.junit.Assert.*;
 public class UserActionDaoTest {
 
 
+    private static int MAC_NUM = 100;
+    private static String[] macs = new String[MAC_NUM];
+    private static File FILE = new File("src/main/resources/radio-mac.txt");
+
+    static {
+        try {
+            Scanner scanner = new Scanner(FILE);
+            int i = 0;
+            while (scanner.hasNextLine()) {
+                if (i < MAC_NUM) {
+                    macs[i] = scanner.nextLine();
+                }
+                i++;
+            }
+            System.out.println("get " + i + " radioMacs");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     private UserActionDao userActionDao;
     private SqlSession sqlSession;
     private Random randoms = new Random(6L);
+
+
 
     /**
      * 加载mybatis配置文件，通过sqlSessionFactory创建sqlSession
@@ -49,7 +69,7 @@ public class UserActionDaoTest {
      */
     @Before
     public void before() throws FileNotFoundException {
-        InputStream inputStream = new FileInputStream("/Users/tuyu/Desktop/test/slice-table/target/classes/mybatis-config.xml");
+        InputStream inputStream = new FileInputStream("src/main/resources/mybatis-config.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         sqlSession = sqlSessionFactory.openSession();
         userActionDao = sqlSession.getMapper(UserActionDao.class);
@@ -73,10 +93,15 @@ public class UserActionDaoTest {
      */
     @Test
     public void add() throws Exception {
+        int insert = insert(10000);
+        System.out.println("add " + insert + " userActions");
+    }
+
+    private int insert(int num) {
         int hash = 0;
         int count = 0;
         UserAction userAction = null;
-        for (int i = 0; i < 10000000; i++) {
+        for (int i = 0; i < num; i++) {
             userAction = random();
             hash = hashUserAction(userAction);
             int add = userActionDao.add(getTableNum(hash), userAction);
@@ -86,7 +111,7 @@ public class UserActionDaoTest {
                 count++;
             }
         }
-        System.out.println("add " + count + " userActions");
+        return count;
     }
 
     /**
@@ -147,25 +172,7 @@ public class UserActionDaoTest {
     }
 
     private String getRandomRadioMac() {
-        final String[] up = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
-        return new StringBuilder(up[randoms.nextInt(16)])
-                .append(up[randoms.nextInt(16)])
-                .append(":")
-                .append(up[randoms.nextInt(16)])
-                .append(up[randoms.nextInt(16)])
-                .append(":")
-                .append(up[randoms.nextInt(16)])
-                .append(up[randoms.nextInt(16)])
-                .append(":")
-                .append(up[randoms.nextInt(16)])
-                .append(up[randoms.nextInt(16)])
-                .append(":")
-                .append(up[randoms.nextInt(16)])
-                .append(up[randoms.nextInt(16)])
-                .append(":")
-                .append(up[randoms.nextInt(16)])
-                .append(up[randoms.nextInt(16)])
-                .toString();
+        return macs[randoms.nextInt(100)];
     }
 
     private String getRandomUserName() {
@@ -238,5 +245,14 @@ public class UserActionDaoTest {
     private int hashObject(Object o) {
         int h;
         return (o == null) ? 0 : (h = o.hashCode()) ^ (h >>> 16);
+    }
+
+
+    @Test
+    public void testList100() {
+        List<UserAction> list = userActionDao.list100();
+        for (UserAction userAction : list) {
+            System.out.println(userAction);
+        }
     }
 }

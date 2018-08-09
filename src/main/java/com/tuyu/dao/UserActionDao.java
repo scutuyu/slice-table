@@ -22,10 +22,10 @@ public interface UserActionDao {
     int add(@Param("tableNum") String tableNum, @Param("userAction") UserAction userAction);
 
     /**
-     * 查询所有
+     * 查询100条数据
      * @return
      */
-    List<UserAction> list();
+    List<UserAction> list100();
 
 
 

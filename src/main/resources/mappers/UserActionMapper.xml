@@ -48,7 +48,7 @@
         )
     </insert>
 
-    <select id="list" resultType="com.tuyu.po.UserAction">
-        select * from `user_action`
+    <select id="list100" resultType="com.tuyu.po.UserAction">
+        select * from `user_action` limit 0, 100
     </select>
 </mapper>
