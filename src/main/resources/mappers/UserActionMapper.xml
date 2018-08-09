@@ -1,0 +1,54 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tuyu.dao.UserActionDao">
+
+
+    <insert id="add" parameterType="com.tuyu.po.UserAction">
+        insert into `user_action_${tableNum}` (
+            `date`,
+            `group_id`,
+            `radio_mac`,
+            `user`,
+            `user_name`,
+            `dev_id`,
+            `host_ip`,
+            `dst_ip`,
+            `ip_version`,
+            `site`,
+            `tm_type`,
+            `serv`,
+            `app`,
+            `src_port`,
+            `serv_port`,
+            `net_action`,
+            `record_time`,
+            `result`,
+            `create_time`
+        ) value(
+            #{userAction.date},
+            #{userAction.groupId},
+            #{userAction.radioMac},
+            #{userAction.user},
+            #{userAction.userName},
+            #{userAction.devId},
+            #{userAction.hostIp},
+            #{userAction.dstIp},
+            #{userAction.ipVersion},
+            #{userAction.site},
+            #{userAction.tmType},
+            #{userAction.serv},
+            #{userAction.app},
+            #{userAction.srcPort},
+            #{userAction.servPort},
+            #{userAction.netAction},
+            #{userAction.recordTime},
+            #{userAction.result},
+            now()
+        )
+    </insert>
+
+    <select id="list" resultType="com.tuyu.po.UserAction">
+        select * from `user_action`
+    </select>
+</mapper>
