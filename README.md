@@ -24,29 +24,36 @@ git clone xxx
 ## 代码结构
 
 ```shell
-├── README.md
-├── pom.xml
-└── src
-    ├── main
-    │   ├── java
-    │   │   └── com
-    │   │       └── tuyu
-    │   │           ├── dao
-    │   │           │   └── UserActionDao.java
-    │   │           └── po
-    │   │               └── UserAction.java
-    │   └── resources
-    │       ├── config.properties
-    │       ├── log4j.properties
-    │       ├── mappers
-    │       │   └── UserActionMapper.xml
-    │       └── mybatis-config.xml
-    └── test
-        └── java
-            └── com
-                └── tuyu
-                    └── dao
-                        └── UserActionDaoTest.java
+  ├── LICENSE
+  ├── README.md
+  ├── pom.xml
+  └── src
+      ├── main
+      │   ├── java
+      │   │   └── com
+      │   │       └── tuyu
+      │   │           ├── dao
+      │   │           │   └── UserActionDao.java
+      │   │           ├── dto
+      │   │           │   └── UserActionDto.java
+      │   │           └── po
+      │   │               └── UserAction.java
+      │   ├── resources
+      │   │   ├── config.properties
+      │   │   ├── log4j.properties
+      │   │   ├── mappers
+      │   │   │   └── UserActionMapper.xml
+      │   │   ├── mybatis-config.xml
+      │   │   └── radio-mac.txt
+      │   └── script
+      │       └── create_table.sql
+      └── test
+          └── java
+              └── com
+                  └── tuyu
+                      └── dao
+                          ├── RadioMacTest.java
+                          └── UserActionDaoTest.java
 
 ```
 
