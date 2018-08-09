@@ -51,4 +51,13 @@
     <select id="list100" resultType="com.tuyu.po.UserAction">
         select * from `user_action` limit 0, 100
     </select>
+
+    <select id="top" parameterType="com.tuyu.dto.UserActionDto" resultType="map">
+        select ${groupBy}, count(*) as num
+        from `user_action`
+        where `date` between #{beginDate} and #{endDate}
+        group by ${groupBy}
+        order by num desc
+        limit 0, ${topN}
+    </select>
 </mapper>

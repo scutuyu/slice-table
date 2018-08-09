@@ -1,5 +1,6 @@
 package com.tuyu.dao;
 
+import com.tuyu.dto.UserActionDto;
 import com.tuyu.po.UserAction;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -87,14 +88,17 @@ public class UserActionDaoTest {
     }
 
     /**
-     * 新增 测试
+     * 插入一千万数据数据 测试
      *
      * @throws Exception
      */
     @Test
     public void add() throws Exception {
-        int insert = insert(10000);
-        System.out.println("add " + insert + " userActions");
+        int num = 10000000;
+        long start = System.currentTimeMillis();
+        int insert = insert(num);
+        long time = System.currentTimeMillis() - start;
+        System.out.println("插入耗时： " + time + " 毫秒， add " + insert + " userActions");
     }
 
     private int insert(int num) {
@@ -248,11 +252,33 @@ public class UserActionDaoTest {
     }
 
 
+    /**
+     * 读取100条数据测试
+     */
     @Test
     public void testList100() {
         List<UserAction> list = userActionDao.list100();
         for (UserAction userAction : list) {
             System.out.println(userAction);
         }
+    }
+
+    /**
+     * 查询6月份所有用户行为记录最多的钱10个人
+     */
+    @Test
+    public void testTop() {
+        UserActionDto userActionDto = new UserActionDto();
+        userActionDto.setBeginDate("2018-06-01");
+        userActionDto.setEndDate("2018-06-30");
+        userActionDto.setTopN(10);
+        userActionDto.setGroupBy("user");
+        long start = System.currentTimeMillis();
+        List<Map<String, Object>> list = userActionDao.top(userActionDto);
+        long time = System.currentTimeMillis() - start;
+        for (Map map : list) {
+            System.out.println(map);
+        }
+        System.out.println("查询耗时：" + time + " 毫秒");
     }
 }

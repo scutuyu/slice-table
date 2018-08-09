@@ -1,9 +1,11 @@
 package com.tuyu.dao;
 
+import com.tuyu.dto.UserActionDto;
 import com.tuyu.po.UserAction;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户行为
@@ -28,5 +30,13 @@ public interface UserActionDao {
     List<UserAction> list100();
 
 
-
+    /**
+     * 查询前top N的记录
+     * @param userActionDto 主要参数: beginDate,
+     *                      endDate,
+     *                      topN,
+     *                      groupBy(聚合的字段名）
+     * @return
+     */
+    List<Map<String, Object>> top(UserActionDto userActionDto);
 }
